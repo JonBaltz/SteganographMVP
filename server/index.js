@@ -35,6 +35,7 @@ app.post('/password', (req, res) => {
 			id: goodId,
 			salt: cryptoUtils.createSalt(),
 		}
+		console.log(current.salt);
 		current.hashed = cryptoUtils.createHash(req.body.password, current.salt);
 		Passwords.create(current, (err, response) => {
 			if (err) {
@@ -42,14 +43,26 @@ app.post('/password', (req, res) => {
 			} else {
 				// encrypt the message with the hashed password and return it and the id
 				const coded = vigenere.encode(req.body.message, response.hashed);
-				res.json({ id: goodId, coded });
+				res.json({ err: null, response: { id: goodId, coded } });
 			}
 		})
 	});
 });
 
 app.get('/auth', (req, res) => {
-	res.send('hello');
+	console.log(req.body.password);
+	Passwords.find({ id: req.body.id }, (err, response) => {
+		if (err) {
+			res.json({ err, response });
+		} else {
+			if (cryptoUtils.compareHash(response[0].hashed, req.body.password, response[0].salt)) {
+				const decoded = vigenere.decode(req.body.message, response[0].hashed);
+				res.json({ err: null, decoded });
+			} else {
+				res.json({ err: null, decoded: false });
+			}
+		}
+	});
 });
 
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
