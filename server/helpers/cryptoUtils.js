@@ -24,6 +24,8 @@ cryptoUtils.compareHash = function (hash, input, salt) {
 	return hash === this.createHash(input, salt);
 }
 
+module.exports = cryptoUtils;
+
 // const salt1 = cryptoUtils.createSalt()
 // console.log(salt1);
 // console.log(cryptoUtils.createId());

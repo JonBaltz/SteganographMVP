@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 
 class App extends Component {
 	constructor(props) {
@@ -7,10 +8,12 @@ class App extends Component {
 			file: null,
 			alert: '',
 			message: 'Enter Message Here',
+			password: 'Password',
 			decoded: ''
 		}
 		this.handleImageChange = this.handleImageChange.bind(this);
 		this.handleMessageChange = this.handleMessageChange.bind(this);
+		this.handlePasswordChange = this.handlePasswordChange.bind(this);
 		this.hide = this.hide.bind(this);
 		this.reveal = this.reveal.bind(this);
 		this.padString = this.padString.bind(this);
@@ -19,21 +22,26 @@ class App extends Component {
 	}
 	handleImageChange(event) {
 		const image = event.target.files[0];
-		// if (image.type === "image/jpg") {
-		this.setState({
-			file: URL.createObjectURL(event.target.files[0])
-		});
-		// } else {
-		// 	this.setState({
-		// 		file: null,
-		// 		alert: 'Please input a png or jpg image'
-		// 	});
-		// }
+		if (image.type === 'image/jpg' || image.type === 'image/png') {
+			this.setState({
+				file: URL.createObjectURL(event.target.files[0])
+			});
+		} else {
+			this.setState({
+				file: null,
+				alert: 'Please input a png or jpg image'
+			});
+		}
 	}
 	handleMessageChange(event) {
-		console.log(event.target.value);
 		this.setState({
 			message: event.target.value
+		});
+	}
+
+	handlePasswordChange(event) {
+		this.setState({
+			password: event.target.value
 		});
 	}
 
@@ -108,6 +116,7 @@ class App extends Component {
 				<button onClick={this.hide}>Hide</button>
 				<button onClick={this.reveal}>Reveal</button>
 				<textarea id="message" onChange={this.handleMessageChange} rows="4" cols="50" defaultValue="Enter Message Here"></textarea>
+				<input id="password" type="text" defaultValue="Password"></input>
 				<img id="original" src={this.state.file} width="220" height="277" />
 				<canvas id="altered" width="220" height="277">Your Browser doesn't support canvas</canvas>
 				<p className="decoded">{this.state.decoded}</p>
