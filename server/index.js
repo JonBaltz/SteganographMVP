@@ -11,10 +11,14 @@ const Passwords = require('./database/passwords.js');
 
 const port = 9000;
 
-// app.get('/', (req, res) => res.send('Hello World!'))
+// Look into server side rendering
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(express.json());
 
+// This can cause crashes if not careful
+// Refactor needed!!!!!
+// Find a better way to hide an id or make the id able to handle more items
+// Refactor to use promises or async await to end crazy callback pyramid
 app.post('/password', (req, res) => {
 	const genUniId = function (callback) {
 		const tryId = cryptoUtils.createId();
@@ -35,7 +39,6 @@ app.post('/password', (req, res) => {
 			id: goodId,
 			salt: cryptoUtils.createSalt(),
 		}
-		console.log(current.salt);
 		current.hashed = cryptoUtils.createHash(req.body.password, current.salt);
 		Passwords.create(current, (err, response) => {
 			if (err) {
@@ -49,8 +52,8 @@ app.post('/password', (req, res) => {
 	});
 });
 
+// Refactor to use promises or async await
 app.get('/auth', (req, res) => {
-	console.log(req.body.password);
 	Passwords.find({ id: req.body.id }, (err, response) => {
 		if (err) {
 			res.json({ err, response });

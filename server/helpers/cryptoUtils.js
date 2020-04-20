@@ -1,3 +1,5 @@
+// Because this is a learning and practice experience, create all this myself rather than using a package
+
 const crypto = require('crypto');
 
 const cryptoUtils = {};
@@ -6,6 +8,7 @@ cryptoUtils.createSalt = function () {
 	return crypto.randomBytes(32).toString('hex');
 }
 
+// Alter id to make it greater
 cryptoUtils.createId = function () {
 	let string = '';
 	for (let i = 0; i < 7; i++) {

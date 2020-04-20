@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
+// Maybe refactor to use hooks
+
+// Definently refactor to multiple react components
+// ie: information section, form, buttons, photos
+
+// Add additional information to the title and description
+
+// Refactor hide and reval to use either hex, binary, or individual digits for color to hold more characters in a photo
+
+// Clean up!!!!
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -22,14 +32,14 @@ class App extends Component {
 	}
 	handleImageChange(event) {
 		const image = event.target.files[0];
-		if (image.type === 'image/jpg' || image.type === 'image/png') {
+		if (image.type === 'image/jpeg' || image.type === 'image/png') {
 			this.setState({
 				file: URL.createObjectURL(event.target.files[0])
 			});
 		} else {
 			this.setState({
 				file: null,
-				alert: 'Please input a png or jpg image'
+				alert: 'Please input a png or jpeg image'
 			});
 		}
 	}
@@ -63,21 +73,40 @@ class App extends Component {
 	}
 
 	hide() {
-		const c = document.getElementById('altered');
-		const context = c.getContext("2d");
-		const img = document.getElementById('original');
-		context.drawImage(img, 0, 0);
-		const imageData = context.getImageData(0, 0, img.width, img.height);
-		const data = imageData.data;
-		const message = this.string2Binary(this.state.message).split(' ').join('');
-		let count = 0;
-		for (var i = 0; i < data.length; i += 4) {
-			if (data[i + 2] < 5 && count < message.length) {
-				data[i + 2] = message[count];
-				count++;
-			}
+		const data = {
+			password: this.state.password,
+			message: this.state.message
 		}
-		context.putImageData(imageData, 0, 0);
+		$.ajax({
+			url: '/password',
+			type: 'POST',
+			contentType: 'application/json',
+			datatype: 'json',
+			data: JSON.stringify(data)
+		}).done(({ err, response }) => {
+			if (err) {
+				this.setState({
+					alert: "There was a problem, please try again."
+				});
+			} else {
+				console.log(response);
+				const c = document.getElementById('altered');
+				const context = c.getContext("2d");
+				const img = document.getElementById('original');
+				context.drawImage(img, 0, 0);
+				const imageData = context.getImageData(0, 0, img.width, img.height);
+				const data = imageData.data;
+				let message = response.id + this.string2Binary(response.coded).split(' ').join('');
+				let count = 0;
+				for (var i = 0; i < data.length; i += 4) {
+					if (data[i + 2] < 5 && count < message.length) {
+						data[i + 2] = message[count];
+						count++;
+					}
+				}
+				context.putImageData(imageData, 0, 0);
+			}
+		})
 	}
 
 	reveal() {
@@ -108,9 +137,9 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<h1>Steganopgraphy</h1>
-				<p>Explainer Paeragraph</p>
-				<label htmlFor="file" accept="image/*, .png">Insert a .png file </label>
+				<h1>Steganography</h1>
+				<p>Explanation paragraph.</p>
+				<label htmlFor="file" accept="image/*, .png">Insert a .png/.jpeg file </label>
 				<input onChange={this.handleImageChange} type="file"></input>
 				<p className="alert">{this.state.alert}</p>
 				<button onClick={this.hide}>Hide</button>

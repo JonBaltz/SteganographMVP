@@ -37,7 +37,7 @@ Once the project moves into development, the press release can be used as a touc
   > A quote from a spokesperson in your company.
 
 ## How to Get Started ##
-  > Simply select a PNG image, write your message/information int the textbox, and click the hide button.
+  > Simply select a PNG or JPEG image, write your message/information int the textbox, and click the hide button.
 
 ## Customer Quote ##
   > "I like to hide my passwords in a photo of my dog so I don't have to pay for an expensive password manager." -Joe Shmoe
