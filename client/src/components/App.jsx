@@ -59,6 +59,10 @@ class App extends Component {
 		return n.length >= w ? n : new Array(w - n.length + 1).join('0') + n;
 	}
 
+	dec2Binary(dec) {
+		return this.padString((dec >>> 0).toString(2));
+	}
+
 	string2Binary(string) {
 		const that = this;
 		return string.split('').map(function (char) {
@@ -73,7 +77,7 @@ class App extends Component {
 	}
 
 	hide() {
-		const data = {
+		const hData = {
 			password: this.state.password,
 			message: this.state.message
 		}
@@ -82,21 +86,20 @@ class App extends Component {
 			type: 'POST',
 			contentType: 'application/json',
 			datatype: 'json',
-			data: JSON.stringify(data)
+			data: JSON.stringify(hData)
 		}).done(({ err, response }) => {
 			if (err) {
 				this.setState({
 					alert: "There was a problem, please try again."
 				});
 			} else {
-				console.log(response);
 				const c = document.getElementById('altered');
 				const context = c.getContext("2d");
 				const img = document.getElementById('original');
 				context.drawImage(img, 0, 0);
 				const imageData = context.getImageData(0, 0, img.width, img.height);
 				const data = imageData.data;
-				let message = response.id + this.string2Binary(response.coded).split(' ').join('');
+				let message = response.id + this.dec2Binary(response.coded.length) + this.string2Binary(response.coded).split(' ').join('');
 				let count = 0;
 				for (var i = 0; i < data.length; i += 4) {
 					if (data[i + 2] < 5 && count < message.length) {
@@ -106,7 +109,7 @@ class App extends Component {
 				}
 				context.putImageData(imageData, 0, 0);
 			}
-		})
+		});
 	}
 
 	reveal() {
@@ -116,22 +119,43 @@ class App extends Component {
 		context.drawImage(img, 0, 0);
 		const imageData = context.getImageData(0, 0, img.width, img.height);
 		const data = imageData.data;
-		let decoded = '';
+		let revealed = '';
 		let space = 0;
 		for (var i = 0; i < data.length; i += 4) {
 			if (data[i + 2] === 1 || data[i + 2] === 0) {
 				if (space === 7) {
-					decoded += ' ';
+					revealed += ' ';
 					space = 0;
 				}
-				decoded += data[i + 2];
+				revealed += data[i + 2];
 				space++;
 			}
 		}
-		decoded = this.binary2String(decoded);
-		this.setState({
-			decoded
-		});
+		revealed = revealed.split(' ');
+		const rId = revealed.shift();
+		const rLength = parseInt(revealed.shift(), 2);
+		const rData = {
+			password: this.state.password,
+			id: rId,
+			message: this.binary2String(revealed.slice(0, rLength).join(' '))
+		}
+		$.ajax({
+			url: '/auth',
+			type: 'Post',
+			contentType: 'application/json',
+			datatype: 'json',
+			data: JSON.stringify(rData)
+		}).done(({ err, decoded }) => {
+			if (err) {
+				this.setState({
+					alert: "There was a problem, please try again."
+				});
+			} else {
+				this.setState({
+					decoded
+				});
+			}
+		})
 	}
 
 	render() {
@@ -145,7 +169,7 @@ class App extends Component {
 				<button onClick={this.hide}>Hide</button>
 				<button onClick={this.reveal}>Reveal</button>
 				<textarea id="message" onChange={this.handleMessageChange} rows="4" cols="50" defaultValue="Enter Message Here"></textarea>
-				<input id="password" type="text" defaultValue="Password"></input>
+				<input id="password" onChange={this.handlePasswordChange} type="text" defaultValue="Password"></input>
 				<img id="original" src={this.state.file} width="220" height="277" />
 				<canvas id="altered" width="220" height="277">Your Browser doesn't support canvas</canvas>
 				<p className="decoded">{this.state.decoded}</p>

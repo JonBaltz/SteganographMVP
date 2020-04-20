@@ -53,7 +53,8 @@ app.post('/password', (req, res) => {
 });
 
 // Refactor to use promises or async await
-app.get('/auth', (req, res) => {
+app.post('/auth', (req, res) => {
+	// console.log(req.body);
 	Passwords.find({ id: req.body.id }, (err, response) => {
 		if (err) {
 			res.json({ err, response });
@@ -62,7 +63,7 @@ app.get('/auth', (req, res) => {
 				const decoded = vigenere.decode(req.body.message, response[0].hashed);
 				res.json({ err: null, decoded });
 			} else {
-				res.json({ err: null, decoded: false });
+				res.json({ err: null, decoded: 'Incorrect Password' });
 			}
 		}
 	});
