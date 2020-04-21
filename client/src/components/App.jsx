@@ -34,7 +34,8 @@ class App extends Component {
 		const image = event.target.files[0];
 		if (image.type === 'image/jpeg' || image.type === 'image/png') {
 			this.setState({
-				file: URL.createObjectURL(event.target.files[0])
+				file: URL.createObjectURL(event.target.files[0]),
+				alert: ''
 			});
 		} else {
 			this.setState({
@@ -160,19 +161,26 @@ class App extends Component {
 
 	render() {
 		return (
-			<div>
-				<h1>Steganography</h1>
-				<p>Explanation paragraph.</p>
-				<label htmlFor="file" accept="image/*, .png">Insert a .png/.jpeg file </label>
-				<input onChange={this.handleImageChange} type="file"></input>
-				<p className="alert">{this.state.alert}</p>
-				<button onClick={this.hide}>Hide</button>
-				<button onClick={this.reveal}>Reveal</button>
-				<textarea id="message" onChange={this.handleMessageChange} rows="4" cols="50" defaultValue="Enter Message Here"></textarea>
-				<input id="password" onChange={this.handlePasswordChange} type="text" defaultValue="Password"></input>
-				<img id="original" src={this.state.file} width="220" height="277" />
-				<canvas id="altered" width="220" height="277">Your Browser doesn't support canvas</canvas>
-				<p className="decoded">{this.state.decoded}</p>
+			<div className="app">
+				<h1 className="title">Steganography</h1>
+				<p className="info">Steganography is the act of hiding some sort of information in an image. This website acomplishes this by altering the brightnes of individual pixels in the image by a tiny amount. Your message is encrypted before being hidden, as well as your password, so noone can see your secret information without using this website and being given your password.</p>
+				<div className="interaction">
+					<div className="file">
+						<label htmlFor="file" accept="image/*, .png">Insert a .png/.jpeg file </label>
+						<input onChange={this.handleImageChange} type="file"></input>
+					</div>
+					<div className="smalls">
+						<input className="password" id="password" onChange={this.handlePasswordChange} type="text" defaultValue="Password"></input>
+						<button onClick={this.hide}>Hide</button>
+						<button onClick={this.reveal}>Reveal</button>
+						<textarea id="message" onChange={this.handleMessageChange} rows="6" cols="84" defaultValue="Enter Message Here"></textarea>
+					</div>
+					<div>
+						<img id="original" src={this.state.file} width="220" height="277" />
+						<canvas id="altered" width="220" height="277">Your Browser doesn't support canvas</canvas>
+					</div>
+					<p className="convey">{this.state.alert + this.state.decoded}</p>
+				</div>
 			</div>
 		);
 	}

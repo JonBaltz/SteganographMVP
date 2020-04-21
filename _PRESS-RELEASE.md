@@ -28,7 +28,7 @@ Once the project moves into development, the press release can be used as a touc
   > You can hide tons of things in a single photo, the information is encrypted and password protected, and your message is never saved to our database. It is almost impossible to see any differences in the images with the naked eye.
 
 ## Problem ##
-  > You never know when someone unwanted may be looking at your data, or when you want to communicate with somone without others knowing.
+  > You never know when someone unwanted may be looking at your data, or when you want to communicate with someone without others knowing.
 
 ## Solution ##
   > Your message is stored in the the color data of a photo and encrypted which makes it unreadable to anyone without using this service and the password.
@@ -43,4 +43,4 @@ Once the project moves into development, the press release can be used as a touc
   > "I like to hide my passwords in a photo of my dog so I don't have to pay for an expensive password manager." -Joe Shmoe
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > Just visit our website and you can begin hiding information securely right now.

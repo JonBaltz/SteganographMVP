@@ -1,0 +1,24 @@
+.app {
+	width: 60%;
+	margin: auto;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.info {
+	line-height: 1.75rem;
+	margin: 35px 0;
+}
+
+.password {
+	height: 20px;
+}
+
+.interaction {
+	margin: auto;
+	width: 60%;
+}
+
+.altered {
+	margin: 10px 20px 0 20px;
+	border: 1px solid #d3d3d3;
+}
