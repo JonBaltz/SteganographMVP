@@ -10,9 +10,9 @@ A user can reveal the message from the image by inputting the immage and a corre
 
 ## Running this Repo
 
-Ensure mongoDB is downloaded on your device.
-In mongoDB, create a database named steganography
-$ npm install
-$ npm run build-dev
-$ npm run start-dev
-Visit http://localhost:9000/ in a browser
+* Ensure mongoDB is downloaded on your device.
+* In mongoDB, create a database named steganography
+* $ npm install
+* $ npm run build-dev
+* $ npm run start-dev
+* Visit http://localhost:9000/ in a browser
