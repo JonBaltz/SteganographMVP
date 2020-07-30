@@ -1,6 +1,6 @@
 # SteganographMVP
 
-A small MVP of the larger steganography website that I am working on. 
+A small MVP/prototype of the larger steganography website that I am working on. 
 
 This is a fullstack website will take a message, image, and password as initial input from the user and will encrypt the message and hide it inside the photo.
 The message is converted to binary and a handfule a bits is inserted into the brightness value of each pixel's blue color. 
