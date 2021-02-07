@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
-// Maybe refactor to use hooks
-
-// Definently refactor to multiple react components
-// ie: information section, form, buttons, photos
-
-// Add additional information to the title and description
-
-// Refactor hide and reval to use either hex, binary, or individual digits for color to hold more characters in a photo
-
-// Clean up!!!!
 class App extends Component {
 	constructor(props) {
 		super(props);
